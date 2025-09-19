@@ -121,13 +121,13 @@
 
       .tab-bar .tab.left {
         left: -50vw;
-        opacity: 0.6;
+        opacity: 0.9;
         z-index: 1;
       }
-      .tab-image {
+            .tab-image {
     position: absolute;
     width: 100%;
-    height: 550px;
+    height: 600px;
     object-fit: cover;
     border-radius: 20px;
     opacity: 0;
@@ -181,6 +181,9 @@ const descriptionArea = document.getElementById('description-area');
 let activeIndex = 0;
 
 function setActiveTab(index) {
+  // Looping (infinite slider effect)
+  if (index < 0) index = tabs.length - 1;
+  if (index >= tabs.length) index = 0;
   activeIndex = index;
 
   // Tab class reset
@@ -211,16 +214,18 @@ function updateMobileTabs() {
     return;
   }
 
-  tabs.forEach((tab, i) => {
-    tab.classList.remove('center', 'left', 'right');
-    if (i === activeIndex) {
-      tab.classList.add('center');
-    } else if (i === activeIndex + 1) {
-      tab.classList.add('right');
-    } else if (i === activeIndex - 1) {
-      tab.classList.add('left');
-    }
-  });
+  tabs.forEach((tab, i) => tab.classList.remove('center', 'left', 'right'));
+
+  // Current tab
+  tabs[activeIndex].classList.add('center');
+
+  // Next tab (right)
+  const nextIndex = (activeIndex + 1) % tabs.length;
+  tabs[nextIndex].classList.add('right');
+
+  // Previous tab (left)
+  const prevIndex = (activeIndex - 1 + tabs.length) % tabs.length;
+  tabs[prevIndex].classList.add('left');
 }
 
 // Tab click event
