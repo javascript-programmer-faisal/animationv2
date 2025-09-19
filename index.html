@@ -51,8 +51,8 @@
     .image-container {
       position: relative;
       width: 100%;
-      height: 550px;
-      margin: 0 auto 60px;
+      height: 400px;
+      margin: 0 auto 40px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -99,34 +99,41 @@
       .tab-bar .tab {
         position: absolute;
         top: 0;
-        width: 50vw; /* এখন 50% নিলাম যাতে একসাথে ২টা visible হয় */
+        width: 50vw;
         text-align: center;
         opacity: 0;
         transition: left 0.4s ease, opacity 0.3s ease, transform 0.3s ease;
       }
 
-      /* Center (Active) */
       .tab-bar .tab.center {
-        left: 0; /* left থেকে শুরু */
+        left: 0;
         opacity: 1;
         transform: scale(1.1);
         z-index: 3;
       }
 
-      /* Right Tab */
       .tab-bar .tab.right {
-        left: 50vw; /* ঠিক ডান পাশে */
-        opacity: 0.8;
+        left: 50vw;
+        opacity: 0.9;
         transform: scale(1);
         z-index: 2;
       }
 
-      /* Left Tab */
       .tab-bar .tab.left {
-        left: -50vw; /* একেবারে বাইরে, scroll হবে না */
-        opacity: 0.8;
+        left: -50vw;
+        opacity: 0.6;
         z-index: 1;
       }
+      .tab-image {
+    position: absolute;
+    width: 100%;
+    height: 700px;
+    object-fit: cover;
+    border-radius: 20px;
+    opacity: 0;
+    transition: all 0.5s ease;
+    transform: scale(0.9);
+}
     }
   </style>
 </head>
@@ -142,7 +149,6 @@
 
     <!-- Image Container -->
     <div class="image-container">
-      <img src="download (2).png" alt="Default" class="tab-image active" id="default-image">
       <img src="download (3).png" alt="Think" class="tab-image" id="think-image">
       <img src="download (4).png" alt="Train" class="tab-image" id="train-image">
       <img src="download (5).png" alt="Feel" class="tab-image" id="feel-image">
@@ -165,7 +171,6 @@ const descriptions = [
 
 const tabs = document.querySelectorAll('.tab');
 const images = {
-  default: document.getElementById('default-image'),
   think: document.getElementById('think-image'),
   train: document.getElementById('train-image'),
   feel: document.getElementById('feel-image'),
@@ -177,6 +182,8 @@ let activeIndex = 0;
 
 function setActiveTab(index) {
   activeIndex = index;
+
+  // Tab class reset
   tabs.forEach(tab => tab.classList.remove('active', 'center', 'left', 'right'));
   Object.values(images).forEach(img => img.classList.remove('active'));
 
@@ -184,6 +191,7 @@ function setActiveTab(index) {
   tabs[index].classList.add('active');
   images[tabName].classList.add('active');
 
+  // Description change
   descriptionArea.style.opacity = '0';
   setTimeout(() => {
     descriptionArea.textContent = descriptions[index];
@@ -195,8 +203,10 @@ function setActiveTab(index) {
 
 function updateMobileTabs() {
   if (window.innerWidth > 768) {
-    tabs.forEach((tab, i) => {
+    tabs.forEach(tab => {
       tab.style.position = 'static';
+      tab.style.opacity = '1';
+      tab.style.transform = 'scale(1)';
     });
     return;
   }
@@ -213,6 +223,7 @@ function updateMobileTabs() {
   });
 }
 
+// Tab click event
 tabs.forEach((tab, i) => {
   tab.addEventListener('click', () => {
     setActiveTab(i);
@@ -221,6 +232,7 @@ tabs.forEach((tab, i) => {
 
 window.addEventListener('resize', updateMobileTabs);
 
+// init
 setActiveTab(0);
 updateMobileTabs();
 </script>
