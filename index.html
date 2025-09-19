@@ -23,56 +23,63 @@
       min-height: 100vh;
     }
 
-    .tab-bar {
-      display: flex;
-      gap: 40px;
-      margin-bottom: 60px;
-      font-weight: bold;
-      font-size: 32px;
-      letter-spacing: 2px;
-      position: relative;
-    }
+  .tab-bar {
+  display: flex;
+  gap: clamp(20px, 4vw, 60px); /* ছোট স্ক্রিনে 20px, বড় স্ক্রিনে max 60px */
+  margin-bottom: clamp(30px, 5vw, 60px);
+  font-weight: bold;
+  font-size: clamp(18px, 2vw, 32px); /* responsive font-size */
+  letter-spacing: 2px;
+  position: relative;
+  flex-wrap: wrap; /* break হবে না, wrap হবে */
+  justify-content: center;
+}
 
-    .tab-bar .tab {
-      opacity: 0.6;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      color: #fff;
-      padding: 15px 30px;
-      border-radius: 8px;
-      position: relative;
-    }
+.tab-bar .tab {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: clamp(8px, 1.5vw, 15px) clamp(12px, 2vw, 30px);
+  border-radius: 8px;
+  position: relative;
+  font-size: clamp(16px, 1.8vw, 28px); /* inactive size */
+  color: #aaa;
+}
 
-    .tab-bar .tab.active {
-      opacity: 1;
-      transform: scale(1.2);
-    }
+.tab-bar .tab.active,
+.tab-bar .tab.center { 
+  color: #fff;
+  font-size: clamp(18px, 2vw, 34px); /* bigger text */
+  transform: scale(1.1);
+  opacity: 1;
+}
 
-    .image-container {
-      position: relative;
-      width: 100%;
-      height: 400px;
-      margin: 0 auto 40px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+.image-container {
+  position: relative;
+  width: 100%;
+  max-width: 1200px; /* বড় স্ক্রিনে image width limit */
+  height: clamp(250px, 50vh, 500px);
+  margin: 0 auto 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-    .tab-image {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 20px;
-      opacity: 0;
-      transition: all 0.5s ease;
-      transform: scale(0.9);
-    }
+.tab-image {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
+  opacity: 0;
+  transition: all 0.5s ease;
+  transform: scale(0.9);
+}
 
-    .tab-image.active {
-      opacity: 1;
-      transform: scale(1);
-    }
+.tab-image.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
 
     .description-area {
       max-width: 600px;
