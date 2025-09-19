@@ -27,10 +27,10 @@
       display: flex;
       gap: 40px;
       margin-bottom: 60px;
-      font-family: 'Arial', sans-serif;
       font-weight: bold;
       font-size: 32px;
       letter-spacing: 2px;
+      position: relative;
     }
 
     .tab-bar .tab {
@@ -43,13 +43,9 @@
       position: relative;
     }
 
-    .tab-bar .tab:hover {
-      opacity: 0.8;
-    }
-
     .tab-bar .tab.active {
       opacity: 1;
-      transform: scale(1.2); /* শুধু size বড় হবে */
+      transform: scale(1.2);
     }
 
     .image-container {
@@ -90,23 +86,46 @@
       letter-spacing: 1px;
     }
 
+    /* ✅ Mobile style */
     @media (max-width: 768px) {
-      .image-container {
-        width: 350px;
-        height: 300px;
-      }
-      
       .tab-bar {
-        font-size: 24px;
-        gap: 20px;
+        width: 100%;
+        height: 60px;
+        margin-bottom: 40px;
+        position: relative;
+        overflow: hidden;
       }
-      
+
       .tab-bar .tab {
-        padding: 10px 20px;
+        position: absolute;
+        top: 0;
+        width: 50vw; /* এখন 50% নিলাম যাতে একসাথে ২টা visible হয় */
+        text-align: center;
+        opacity: 0;
+        transition: left 0.4s ease, opacity 0.3s ease, transform 0.3s ease;
       }
-      
-      .description-area {
-        font-size: 16px;
+
+      /* Center (Active) */
+      .tab-bar .tab.center {
+        left: 0; /* left থেকে শুরু */
+        opacity: 1;
+        transform: scale(1.1);
+        z-index: 3;
+      }
+
+      /* Right Tab */
+      .tab-bar .tab.right {
+        left: 50vw; /* ঠিক ডান পাশে */
+        opacity: 0.8;
+        transform: scale(1);
+        z-index: 2;
+      }
+
+      /* Left Tab */
+      .tab-bar .tab.left {
+        left: -50vw; /* একেবারে বাইরে, scroll হবে না */
+        opacity: 0.8;
+        z-index: 1;
       }
     }
   </style>
@@ -115,7 +134,7 @@
   <div class="container">
     <!-- Tab Bar -->
     <div class="tab-bar" id="tab-bar">
-      <div class="tab active" data-tab="think">THINK</div>
+      <div class="tab" data-tab="think">THINK</div>
       <div class="tab" data-tab="train">TRAIN</div>
       <div class="tab" data-tab="feel">FEEL</div>
       <div class="tab" data-tab="lead">LEAD</div>
@@ -123,78 +142,87 @@
 
     <!-- Image Container -->
     <div class="image-container">
-      <!-- Default Image -->
       <img src="download (2).png" alt="Default" class="tab-image active" id="default-image">
-      
-      <!-- Tab Images -->
       <img src="download (3).png" alt="Think" class="tab-image" id="think-image">
       <img src="download (4).png" alt="Train" class="tab-image" id="train-image">
       <img src="download (5).png" alt="Feel" class="tab-image" id="feel-image">
       <img src="download (6).png" alt="Lead" class="tab-image" id="lead-image">
     </div>
 
-    <!-- Description Area -->
+    <!-- Description -->
     <div class="description-area" id="description-area">
       A mindset built on growth, mental toughness, and lifelong learning.
     </div>
   </div>
 
   <script>
-    const descriptions = [
-      "A mindset built on growth, mental toughness, and lifelong learning.",
-      "Deliberate actions to improve overall health and physical strength.",
-      "Building self-awareness to strengthen communication and relationships.",
-      "How we live reflects what matters most in our leadership journey."
-    ];
+const descriptions = [
+  "A mindset built on growth, mental toughness, and lifelong learning.",
+  "Deliberate actions to improve overall health and physical strength.",
+  "Building self-awareness to strengthen communication and relationships.",
+  "How we live reflects what matters most in our leadership journey."
+];
 
-    const tabs = document.querySelectorAll('.tab');
-    const images = {
-      default: document.getElementById('default-image'),
-      think: document.getElementById('think-image'),
-      train: document.getElementById('train-image'),
-      feel: document.getElementById('feel-image'),
-      lead: document.getElementById('lead-image')
-    };
-    const descriptionArea = document.getElementById('description-area');
+const tabs = document.querySelectorAll('.tab');
+const images = {
+  default: document.getElementById('default-image'),
+  think: document.getElementById('think-image'),
+  train: document.getElementById('train-image'),
+  feel: document.getElementById('feel-image'),
+  lead: document.getElementById('lead-image')
+};
+const descriptionArea = document.getElementById('description-area');
 
-    function setActiveTab(tabName, index) {
-      // Update tab appearance
-      tabs.forEach(tab => tab.classList.remove('active'));
-      if (tabName) {
-        document.querySelector(`.tab[data-tab="${tabName}"]`).classList.add('active');
-      }
+let activeIndex = 0;
 
-      // Hide all images
-      Object.values(images).forEach(img => img.classList.remove('active'));
+function setActiveTab(index) {
+  activeIndex = index;
+  tabs.forEach(tab => tab.classList.remove('active', 'center', 'left', 'right'));
+  Object.values(images).forEach(img => img.classList.remove('active'));
 
-      // Show default if no tab
-      if (!tabName) {
-        images.default.classList.add('active');
-        descriptionArea.textContent = "A mindset built on growth, mental toughness, and lifelong learning.";
-        return;
-      }
+  const tabName = tabs[index].dataset.tab;
+  tabs[index].classList.add('active');
+  images[tabName].classList.add('active');
 
-      // Show the corresponding image
-      images[tabName].classList.add('active');
+  descriptionArea.style.opacity = '0';
+  setTimeout(() => {
+    descriptionArea.textContent = descriptions[index];
+    descriptionArea.style.opacity = '1';
+  }, 250);
 
-      // Update description
-      descriptionArea.style.opacity = '0';
-      setTimeout(() => {
-        descriptionArea.textContent = descriptions[index];
-        descriptionArea.style.opacity = '1';
-      }, 250);
-    }
+  updateMobileTabs();
+}
 
-    tabs.forEach((tab, index) => {
-      tab.addEventListener('click', () => {
-        const tabName = tab.dataset.tab;
-        setActiveTab(tabName, index);
-      });
+function updateMobileTabs() {
+  if (window.innerWidth > 768) {
+    tabs.forEach((tab, i) => {
+      tab.style.position = 'static';
     });
+    return;
+  }
 
-    // Initialize (default state, no tab active)
-    tabs.forEach(tab => tab.classList.remove('active'));
-    setActiveTab(null);
-  </script>
+  tabs.forEach((tab, i) => {
+    tab.classList.remove('center', 'left', 'right');
+    if (i === activeIndex) {
+      tab.classList.add('center');
+    } else if (i === activeIndex + 1) {
+      tab.classList.add('right');
+    } else if (i === activeIndex - 1) {
+      tab.classList.add('left');
+    }
+  });
+}
+
+tabs.forEach((tab, i) => {
+  tab.addEventListener('click', () => {
+    setActiveTab(i);
+  });
+});
+
+window.addEventListener('resize', updateMobileTabs);
+
+setActiveTab(0);
+updateMobileTabs();
+</script>
 </body>
 </html>
