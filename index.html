@@ -23,63 +23,72 @@
       min-height: 100vh;
     }
 
-  .tab-bar {
-  display: flex;
-  gap: clamp(20px, 4vw, 60px); /* ছোট স্ক্রিনে 20px, বড় স্ক্রিনে max 60px */
-  margin-bottom: clamp(30px, 5vw, 60px);
-  font-weight: bold;
-  font-size: clamp(18px, 2vw, 32px); /* responsive font-size */
-  letter-spacing: 2px;
-  position: relative;
-  flex-wrap: wrap; /* break হবে না, wrap হবে */
-  justify-content: center;
-}
+    /* Wrapper to sync width */
+    .tab-wrapper {
+      width: 100%;
+      max-width: 1200px; /* বড় স্ক্রিনে limit */
+    }
 
-.tab-bar .tab {
-  cursor: pointer;
-  transition: all 0.3s ease;
-  padding: clamp(8px, 1.5vw, 15px) clamp(12px, 2vw, 30px);
-  border-radius: 8px;
-  position: relative;
-  font-size: clamp(16px, 1.8vw, 28px); /* inactive size */
-  color: #aaa;
-}
+    /* Tab bar */
+    .tab-bar {
+      display: flex;
+      gap: clamp(20px, 4vw, 60px);
+      margin-bottom: clamp(30px, 5vw, 60px);
+      font-weight: bold;
+      font-size: clamp(18px, 2vw, 32px);
+      letter-spacing: 2px;
+      position: relative;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%; /* same width as wrapper */
+    }
 
-.tab-bar .tab.active,
-.tab-bar .tab.center { 
-  color: #fff;
-  font-size: clamp(18px, 2vw, 34px); /* bigger text */
-  transform: scale(1.1);
-  opacity: 1;
-}
+    .tab-bar .tab {
+      cursor: pointer;
+      transition: all 0.3s ease;
+      padding: clamp(8px, 1.5vw, 15px) clamp(12px, 2vw, 30px);
+      border-radius: 8px;
+      position: relative;
+      font-size: clamp(16px, 1.8vw, 28px);
+      color: #aaa;
+    }
 
-.image-container {
+    .tab-bar .tab.active,
+    .tab-bar .tab.center { 
+      color: #fff;
+      font-size: clamp(18px, 2vw, 34px);
+      transform: scale(1.1);
+      opacity: 1;
+    }
+
+    /* Image container */
+   .image-container {
   position: relative;
   width: 100%;
-  max-width: 1200px; /* বড় স্ক্রিনে image width limit */
-  height: clamp(250px, 50vh, 500px);
+  max-width: 1200px; /* tab width same */
   margin: 0 auto 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  height: 500px; /* ইচ্ছেমতো বড় height */
 }
 
 .tab-image {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 20px;
-  opacity: 0;
-  transition: all 0.5s ease;
-  transform: scale(0.9);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 170%;
+    height: 150%;
+    object-fit: cover;
+    border-radius: 20px;
+    opacity: 0;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    transform: translate(-50%, -50%) scale(1);
+}
+.tab-image.active {
+    opacity: 1;
 }
 
 .tab-image.active {
   opacity: 1;
-  transform: scale(1);
 }
-
 
     .description-area {
       max-width: 600px;
@@ -91,9 +100,10 @@
       transition: opacity 0.5s ease;
       font-weight: 400;
       letter-spacing: 1px;
+      margin: 0 auto;
     }
 
-    /* ✅ Mobile style */
+    /* Mobile styles */
     @media (max-width: 768px) {
       .tab-bar {
         width: 100%;
@@ -131,35 +141,38 @@
         opacity: 0.9;
         z-index: 1;
       }
-            .tab-image {
-    position: absolute;
-    width: 100%;
-    height: 600px;
-    object-fit: cover;
-    border-radius: 20px;
-    opacity: 0;
-    transition: all 0.5s ease;
-    transform: scale(0.9);
-}
+
+      .image-container {
+        max-width: 100%;
+      }
+
+      .tab-image {
+        position: absolute;
+        width: 100%;
+        height: auto;
+        border-radius: 20px;
+      }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- Tab Bar -->
-    <div class="tab-bar" id="tab-bar">
-      <div class="tab" data-tab="think">THINK</div>
-      <div class="tab" data-tab="train">TRAIN</div>
-      <div class="tab" data-tab="feel">FEEL</div>
-      <div class="tab" data-tab="lead">LEAD</div>
-    </div>
+    <div class="tab-wrapper">
+      <!-- Tab Bar -->
+      <div class="tab-bar" id="tab-bar">
+        <div class="tab" data-tab="think">THINK</div>
+        <div class="tab" data-tab="train">TRAIN</div>
+        <div class="tab" data-tab="feel">FEEL</div>
+        <div class="tab" data-tab="lead">LEAD</div>
+      </div>
 
-    <!-- Image Container -->
-    <div class="image-container">
-      <img src="download (3).png" alt="Think" class="tab-image" id="think-image">
-      <img src="download (4).png" alt="Train" class="tab-image" id="train-image">
-      <img src="download (5).png" alt="Feel" class="tab-image" id="feel-image">
-      <img src="download (6).png" alt="Lead" class="tab-image" id="lead-image">
+      <!-- Image Container -->
+      <div class="image-container">
+        <img src="download (3).png" alt="Think" class="tab-image" id="think-image">
+        <img src="download (4).png" alt="Train" class="tab-image" id="train-image">
+        <img src="download (5).png" alt="Feel" class="tab-image" id="feel-image">
+        <img src="download (6).png" alt="Lead" class="tab-image" id="lead-image">
+      </div>
     </div>
 
     <!-- Description -->
@@ -169,84 +182,74 @@
   </div>
 
   <script>
-const descriptions = [
-  "A mindset built on growth, mental toughness, and lifelong learning.",
-  "Deliberate actions to improve overall health and physical strength.",
-  "Building self-awareness to strengthen communication and relationships.",
-  "How we live reflects what matters most in our leadership journey."
-];
+    const descriptions = [
+      "A mindset built on growth, mental toughness, and lifelong learning.",
+      "Deliberate actions to improve overall health and physical strength.",
+      "Building self-awareness to strengthen communication and relationships.",
+      "How we live reflects what matters most in our leadership journey."
+    ];
 
-const tabs = document.querySelectorAll('.tab');
-const images = {
-  think: document.getElementById('think-image'),
-  train: document.getElementById('train-image'),
-  feel: document.getElementById('feel-image'),
-  lead: document.getElementById('lead-image')
-};
-const descriptionArea = document.getElementById('description-area');
+    const tabs = document.querySelectorAll('.tab');
+    const images = {
+      think: document.getElementById('think-image'),
+      train: document.getElementById('train-image'),
+      feel: document.getElementById('feel-image'),
+      lead: document.getElementById('lead-image')
+    };
+    const descriptionArea = document.getElementById('description-area');
 
-let activeIndex = 0;
+    let activeIndex = 0;
 
-function setActiveTab(index) {
-  // Looping (infinite slider effect)
-  if (index < 0) index = tabs.length - 1;
-  if (index >= tabs.length) index = 0;
-  activeIndex = index;
+    function setActiveTab(index) {
+      if (index < 0) index = tabs.length - 1;
+      if (index >= tabs.length) index = 0;
+      activeIndex = index;
 
-  // Tab class reset
-  tabs.forEach(tab => tab.classList.remove('active', 'center', 'left', 'right'));
-  Object.values(images).forEach(img => img.classList.remove('active'));
+      tabs.forEach(tab => tab.classList.remove('active', 'center', 'left', 'right'));
+      Object.values(images).forEach(img => img.classList.remove('active'));
 
-  const tabName = tabs[index].dataset.tab;
-  tabs[index].classList.add('active');
-  images[tabName].classList.add('active');
+      const tabName = tabs[index].dataset.tab;
+      tabs[index].classList.add('active');
+      images[tabName].classList.add('active');
 
-  // Description change
-  descriptionArea.style.opacity = '0';
-  setTimeout(() => {
-    descriptionArea.textContent = descriptions[index];
-    descriptionArea.style.opacity = '1';
-  }, 250);
+      descriptionArea.style.opacity = '0';
+      setTimeout(() => {
+        descriptionArea.textContent = descriptions[index];
+        descriptionArea.style.opacity = '1';
+      }, 250);
 
-  updateMobileTabs();
-}
+      updateMobileTabs();
+    }
 
-function updateMobileTabs() {
-  if (window.innerWidth > 768) {
-    tabs.forEach(tab => {
-      tab.style.position = 'static';
-      tab.style.opacity = '1';
-      tab.style.transform = 'scale(1)';
+    function updateMobileTabs() {
+      if (window.innerWidth > 768) {
+        tabs.forEach(tab => {
+          tab.style.position = 'static';
+          tab.style.opacity = '1';
+          tab.style.transform = 'scale(1)';
+        });
+        return;
+      }
+
+      tabs.forEach((tab, i) => tab.classList.remove('center', 'left', 'right'));
+
+      tabs[activeIndex].classList.add('center');
+      const nextIndex = (activeIndex + 1) % tabs.length;
+      tabs[nextIndex].classList.add('right');
+      const prevIndex = (activeIndex - 1 + tabs.length) % tabs.length;
+      tabs[prevIndex].classList.add('left');
+    }
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => {
+        setActiveTab(i);
+      });
     });
-    return;
-  }
 
-  tabs.forEach((tab, i) => tab.classList.remove('center', 'left', 'right'));
+    window.addEventListener('resize', updateMobileTabs);
 
-  // Current tab
-  tabs[activeIndex].classList.add('center');
-
-  // Next tab (right)
-  const nextIndex = (activeIndex + 1) % tabs.length;
-  tabs[nextIndex].classList.add('right');
-
-  // Previous tab (left)
-  const prevIndex = (activeIndex - 1 + tabs.length) % tabs.length;
-  tabs[prevIndex].classList.add('left');
-}
-
-// Tab click event
-tabs.forEach((tab, i) => {
-  tab.addEventListener('click', () => {
-    setActiveTab(i);
-  });
-});
-
-window.addEventListener('resize', updateMobileTabs);
-
-// init
-setActiveTab(0);
-updateMobileTabs();
-</script>
+    setActiveTab(0);
+    updateMobileTabs();
+  </script>
 </body>
 </html>
