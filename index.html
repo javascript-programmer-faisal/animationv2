@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tab Image Animation</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #09171F;
+      color: #fff;
+      font-family: 'Arial', sans-serif;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      min-height: 100vh;
+    }
+
+    .tab-bar {
+      display: flex;
+      gap: 40px;
+      margin-bottom: 60px;
+      font-family: 'Arial', sans-serif;
+      font-weight: bold;
+      font-size: 32px;
+      letter-spacing: 2px;
+    }
+
+    .tab-bar .tab {
+      opacity: 0.4;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 8px;
+    }
+
+    .tab-bar .tab:hover {
+      opacity: 0.7;
+    }
+
+    .tab-bar .tab.active {
+      opacity: 1;
+      color: #2ec4b6;
+      text-shadow: 0 0 10px #2ec4b6;
+      background: rgba(46, 196, 182, 0.1);
+    }
+
+    .image-container {
+      position: relative;
+      width: 500px;
+      height: 500px;
+      margin: 0 auto 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+
+    /* ✅ CENTER IMAGE: ছোট করে */
+    .center-image {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      overflow: hidden;
+      box-shadow: none;
+    }
+
+    .center-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      display: block;
+    }
+
+    /* ✅ SURROUNDING IMAGES - center এর সমান size */
+    .surrounding-image {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      cursor: pointer;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      opacity: 0.7;
+      z-index: 1;
+      border-radius: 15px;
+      overflow: hidden;
+    }
+
+    .surrounding-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 15px;
+      display: block;
+    }
+
+    .surrounding-image:hover {
+      opacity: 0.9;
+      transform: scale(1.05);
+    }
+
+    .surrounding-image.active {
+      opacity: 1;
+      transform: scale(1.3);
+      box-shadow: none;
+    }
+
+    .image-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 14px;
+      font-weight: bold;
+      text-align: center;
+      color: #fff;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+      z-index: 2;
+      pointer-events: none;
+      transition: all 0.3s ease;
+    }
+
+    .surrounding-image.active .image-text {
+      font-size: 25px;
+      font-weight: bold;
+    }
+
+    /* Position surrounding images - center এর সাথে লাগানো */
+    .surrounding-image.think {
+    top: 25px;
+    left: 15px;
+    transform: rotate3d(3, 0, 4, 14deg);
+}
+.surrounding-image.train {
+    top: 25px;
+    right: 15px;
+    transform: rotate(12deg);
+}
+.surrounding-image.lead {
+    bottom: 15px;
+    right: 25px;
+    transform: rotate(12deg);
+}
+.surrounding-image.feel {
+    bottom: 20px;
+    left: 15px;
+    transform: rotate(14deg);
+}
+
+    .description-area {
+      max-width: 600px;
+      text-align: center;
+      font-size: 20px;
+      line-height: 1.6;
+      color: #eaf6f6;
+      opacity: 1;
+      transition: opacity 0.5s ease;
+      font-weight: 400;
+      letter-spacing: 1px;
+    }
+
+    @media (max-width: 768px) {
+      .image-container { width: 400px; height: 400px; }
+      .center-image { width: 150px; height: 150px; }
+      .surrounding-image { width: 150px; height: 150px; }
+      .tab-bar { font-size: 24px; gap: 20px; }
+      .description-area { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Tab Bar -->
+    <div class="tab-bar" id="tab-bar">
+      <div class="tab active" data-tab="think">THINK</div>
+      <div class="tab" data-tab="train">TRAIN</div>
+      <div class="tab" data-tab="feel">FEEL</div>
+      <div class="tab" data-tab="lead">LEAD</div>
+    </div>
+
+    <!-- Image Container -->
+    <div class="image-container">
+      <!-- Center Image -->
+      <div class="center-image" id="center-image">
+        <img src="no-bg-image (6).png" alt="Center Image">
+      </div>
+
+      <!-- Surrounding Images -->
+      <div class="surrounding-image think active" data-tab="think">
+        <img src="Untitled design (51).png" alt="Think">
+        <div class="image-text">THINK</div>
+      </div>
+      
+      <div class="surrounding-image train" data-tab="train">
+        <img src="Untitled design (48).png" alt="Train">
+        <div class="image-text">TRAIN</div>
+      </div>
+      
+      <div class="surrounding-image feel" data-tab="feel">
+        <img src="Untitled design (50).png" alt="Feel">
+        <div class="image-text">FEEL</div>
+      </div>
+      
+      <div class="surrounding-image lead" data-tab="lead">
+        <img src="Untitled design (49).png" alt="Lead">
+        <div class="image-text">LEAD</div>
+      </div>
+    </div>
+
+    <!-- Description Area -->
+    <div class="description-area" id="description-area">
+      A mindset built on growth, mental toughness, and lifelong learning.
+    </div>
+  </div>
+
+  <script>
+    const descriptions = [
+      "A mindset built on growth, mental toughness, and lifelong learning.",
+      "Deliberate actions to improve overall health and physical strength.",
+      "Building self-awareness to strengthen communication and relationships.",
+      "How we live reflects what matters most in our leadership journey."
+    ];
+
+    const tabs = document.querySelectorAll('.tab');
+    const surroundingImages = document.querySelectorAll('.surrounding-image');
+    const descriptionArea = document.getElementById('description-area');
+
+    let activeIndex = 0;
+
+    function setActiveTab(index) {
+      tabs.forEach((tab, i) => tab.classList.toggle('active', i === index));
+      surroundingImages.forEach((img, i) => img.classList.toggle('active', i === index));
+
+      descriptionArea.style.opacity = '0';
+      setTimeout(() => {
+        descriptionArea.textContent = descriptions[index];
+        descriptionArea.style.opacity = '1';
+      }, 250);
+    }
+
+    tabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => {
+        activeIndex = index;
+        setActiveTab(activeIndex);
+      });
+    });
+
+    surroundingImages.forEach((img, index) => {
+      img.addEventListener('click', () => {
+        activeIndex = index;
+        setActiveTab(activeIndex);
+      });
+    });
+
+    setActiveTab(activeIndex);
+  </script>
+</body>
+</html>
